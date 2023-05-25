@@ -134,7 +134,7 @@ function sampleMetadata(sample) {
                 let layout = {
                     title: "OTUs Per ID",
                     yaxis: {title: "Sample Values"},
-                    width: 1000,
+                    width: 1055,
                     height: 300,
                     margin: {t: 50,
                         l: 65,
@@ -190,7 +190,7 @@ function sampleMetadata(sample) {
             
                 // Create Layout
                 let layout = {
-                    width: 400,
+                    width: 375,
                     height: 400,
                     margin: { t: 0, b: 0 }
                 };
