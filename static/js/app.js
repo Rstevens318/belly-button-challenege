@@ -26,6 +26,7 @@ function init() {
     barChart(firstSample);
     sampleMetadata(firstSample);
     bubbleChart(firstSample);
+    gaugeChart(firstSample);
     });
 };
     // Create a function to build horizontal bar chart with Top Ten OTUs
@@ -63,7 +64,8 @@ function barChart(sample) {
         // Create Layout
         let layout = {
             title: "Top Ten OTUs",
-
+            width: 400,
+                    height: 400,
         };
 
         // Plot the chart to a div tag with id "bar"
@@ -132,6 +134,8 @@ function sampleMetadata(sample) {
                 let layout = {
                     title: "OTUs Per ID",
                     yaxis: {title: "Sample Values"},
+                    width: 1000,
+                    height: 300,
                     margin: {t: 50,
                         l: 65,
                         r: 65,
@@ -144,6 +148,58 @@ function sampleMetadata(sample) {
             });
 };
 
+    // Create Function to build gauge chart
+    function gaugeChart(sample) {
+
+        // Use D3 to retrieve and filter metadata for the selected wfreq
+        d3.json(url).then((data) => {
+            let metadata = data.metadata;
+            let resultArray = metadata.filter(sampleObj => sampleObj.id == sample);
+    
+            // Get the first result from the array
+            let result = resultArray[0];
+
+            // Get the wfreq for the selected sample and log into console
+            let washfreq = result.wfreq;
+            console.log(washfreq);
+            // Create trace for gauge chart
+            let trace2 = 
+                {
+                    domain: { x: [0, 1], y: [0, 1] },
+                    value: washfreq,
+                    title: { text: "Belly Button Washing Frequency</b><br>Scrubs Per Week" },
+                    type: "indicator",
+                    mode: "gauge+number",
+                    gauge: {
+                        axis: {range: [0,9], tickmode: 'linear', tick0: 2, dtick: 2},
+                        bar: {color: 'black'},
+                        steps: [
+                            {range: [0,1], color: 'rgba(255, 255, 255, 0)'},
+                            {range: [1,2], color: 'floralwhite'},
+                            {range: [2,3], color: 'lightyellow'},
+                            {range: [3,4], color: 'palegoldenrod'},
+                            {range: [4,5], color: 'gold'},
+                            {range: [5,6], color: 'khaki'},
+                            {range: [6,7], color: 'darkkhaki'},
+                            {range: [7,8], color: 'olive'},
+                            {range: [8,9], color: 'darkolivegreen'}
+                ]
+
+            }
+        }
+            
+                // Create Layout
+                let layout = {
+                    width: 400,
+                    height: 400,
+                    margin: { t: 0, b: 0 }
+                };
+
+                // Plot the chart to a div tag with id "gauge"
+                Plotly.newPlot("gauge", [trace2], layout);
+            });
+};
+
     // Create a function to update the charts when a new sample is selected
     function optionChanged(value) {
 
@@ -152,9 +208,12 @@ function sampleMetadata(sample) {
         barChart(value);
         sampleMetadata(value);
         bubbleChart(value);
+        gaugeChart(value);
     };
 
 
 
 
 init();
+
+
